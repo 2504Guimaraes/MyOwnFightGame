@@ -28,7 +28,9 @@ class Sprite {
         this.position.x += this.speed.x
         this.position.y += this.speed.y
         
-        const spriteHasReachedTheBottom = this.position.y + this.height + this.speed.y >= canvas.height
+        const spriteHasReachedTheBottom = this.position.y + this.height + 
+        this.speed.y >= canvas.height
+        
         spriteHasReachedTheBottom ? 
             this.speed.y = 0 :
             this.speed.y += gravitySpeed
@@ -61,7 +63,7 @@ const keys = {
 let player_ = { lastKey: null }
 let foe_ = { lastKey: null }
 
-let lstKeyPressed = null
+// let lstKeyPressed = null
 
 const animation = () => {
     console.log("Number increasing every 1s is showing the frame's speed.")
@@ -71,54 +73,90 @@ const animation = () => {
     player.updateSprite()
     foe.updateSprite()
 
-    // Player's movement:
+    // Player's original movement:
+    // player.speed.x = 0
+    // if (keys.ArrowRight.pressed && player.lastKey === 'ArrowRight')
+    //     player.speed.x = 1
+    // else if (keys.ArrowLeft.pressed && lstKeyPressed === 'ArrowLeft')
+    //     player.speed.x = -1
+
     player.speed.x = 0
-    if (keys.ArrowRight.pressed && player.lastKey === 'ArrowRight')
-        player.speed.x = 1
-    else if (keys.ArrowLeft.pressed && lstKeyPressed === 'ArrowLeft')
-        player.speed.x = -1
+    foe.speed.x = 0
+
+    // Player's movement:
+    if (keys.d.pressed && player_.lastKey === 'd')
+        player.speed.x = 4
+    else if (keys.a.pressed && player_.lastKey === 'a')
+        player.speed.x = -4
 
     // Foe's movement:
-    player.speed.x = 0
-    if (keys.ArrowRight.pressed && lstKeyPressed === 'ArrowRight')
-        player.speed.x = 1
-    else if (keys.ArrowLeft.pressed && lstKeyPressed === 'ArrowLeft')
-        player.speed.x = -1
+    if (keys.ArrowRight.pressed && foe_.lastKey === 'ArrowRight')
+        foe.speed.x = 4
+    else if (keys.ArrowLeft.pressed && foe_.lastKey === 'ArrowLeft')
+        foe.speed.x = -4
 }
 animation()
 
 window.addEventListener('keydown', (keyboradClickEvent) => {
     switch(keyboradClickEvent.key) {
+        case 'd':
+            keys.d.pressed = true
+            player_.lastKey = 'd'
+            console.log("Player's going [→]")
+            break
+        case 'a':
+            keys.a.pressed = true
+            player_.lastKey = 'a'
+            console.log("Player's going [←]")
+            break
+        case 'w':
+            player.speed.y = -10
+            console.log("Player jumped [↑]")
+            break
+
         case 'ArrowRight':
             keys.ArrowRight.pressed = true
-            lstKeyPressed = 'ArrowRight'
-            console.log("Player's going [→]")
+            foe_.lastKey = 'ArrowRight'
+            console.log("Foe's going [→]")
             break
         case 'ArrowLeft':
             keys.ArrowLeft.pressed = true
-            lstKeyPressed = 'ArrowLeft'
-            console.log("Player's going [←]")
+            foe_.lastKey = 'ArrowLeft'
+            console.log("Foe's going [←]")
             break
         case 'ArrowUp':
-            player.speed.y = -10
-            console.log("Player jumped [↑]")
+            foe.speed.y = -10
+            console.log("Foe jumped [↑]")
             break
     }
 })
 
 window.addEventListener('keyup', (keyboradClickEvent) => {
     switch(keyboradClickEvent.key) {
+        case 'd':
+            keys.d.pressed = false
+            console.log('Player Stopped')
+            break
+        case 'a':
+            keys.a.pressed = false
+            console.log('Player Stopped')
+            break
+        case 'w':
+            keys.w.pressed = false
+            console.log('Player Stopped')
+            break
+
         case 'ArrowRight':
             keys.ArrowRight.pressed = false
-            console.log('Player Stopped')
+            console.log('Foe Stopped')
             break
         case 'ArrowLeft':
             keys.ArrowLeft.pressed = false
-            console.log('Player Stopped')
+            console.log('Foe Stopped')
             break
         case 'ArrowUp':
             keys.ArrowUp.pressed = false
-            console.log('Player Stopped')
+            console.log('Foe Stopped')
             break
     }
 })
