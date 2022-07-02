@@ -12,15 +12,41 @@ class Sprite {
         this.color = color
         this.position = position
         this.speed = speed
+        this.width = 50
         this.height = 150
+        this.attackBox = {
+            position: this.position,
+            width: 100,
+            height: 50
+        }
+        this.isAttacking = false
     }
 
     drawSprite() {
-        const colorIsValid = this.color != null && this.color != '' 
+        const colorIsValid = this.color != null && 
+            this.color != ''
+
         colorIsValid ? 
             c.fillStyle = this.color : 
             c.fillStyle = 'magenta'
-        c.fillRect(this.position.x, this.position.y, 50, this.height)
+
+        c.fillRect(
+            this.position.x, 
+            this.position.y, 
+            this.width, 
+            this.height
+        )
+
+        // drawing attack box only if player attacks:
+        if (this.isAttacking) {
+            c.fillStyle = 'green'
+            c.fillRect(
+                this.attackBox.position.x, 
+                this.attackBox.position.y,
+                this.attackBox.width,
+                this.attackBox.height
+            )
+        }
     }
 
     updateSprite() {
@@ -29,11 +55,18 @@ class Sprite {
         this.position.y += this.speed.y
         
         const spriteHasReachedTheBottom = this.position.y + this.height + 
-        this.speed.y >= canvas.height
+            this.speed.y >= canvas.height
 
         spriteHasReachedTheBottom ? 
             this.speed.y = 0 :
             this.speed.y += gravitySpeed
+    }
+
+    attack() {
+        this.isAttacking = true
+        setTimeout(() => { 
+            this.isAttacking = false 
+        }, 100)
     }
 }
 
@@ -67,7 +100,8 @@ let player_ = { lastKey: null }
 let foe_ = { lastKey: null }
 
 const animation = () => {
-    console.log("Number increasing every 1s is showing the frame's speed.")
+    // Message bellow shows frame's speed:
+    // console.log("Number increasing every 1s is showing the frame's speed.")
     // Animation infinity loop:
     window.requestAnimationFrame(animation)
     c.fillStyle = 'black'
@@ -75,19 +109,30 @@ const animation = () => {
     player.updateSprite()
     foe.updateSprite()
 
-    // Player's and Foe's default speeds:
+    // 1. Player's and Foe's default speeds:
     player.speed.x = 0
     foe.speed.x = 0
-    // Player's movement:
+    // 2. Player's movement:
     if (keys.d.pressed && player_.lastKey === 'd')
         player.speed.x = 4
     else if (keys.a.pressed && player_.lastKey === 'a')
         player.speed.x = -4
-    // Foe's movement:
+    // 3. Foe's movement:
     if (keys.ArrowRight.pressed && foe_.lastKey === 'ArrowRight')
         foe.speed.x = 4
     else if (keys.ArrowLeft.pressed && foe_.lastKey === 'ArrowLeft')
         foe.speed.x = -4
+    
+    // 4. Detect for collisions:
+    if (player.attackBox.position.x + player.attackBox.width >= foe.position.x && 
+        player.attackBox.position.x <= foe.position.x + foe.width && 
+        player.attackBox.position.y + player.attackBox.height >= foe.position.y 
+        && player.attackBox.position.y <= foe.position.y + foe.height &&
+        player.isAttacking
+    ) {
+        player.isAttacking = false
+        console.log('<<< Foe hit <<<')
+    }
 }
 animation()
 
@@ -106,6 +151,10 @@ window.addEventListener('keydown', (keyboardClickEvent) => {
         case 'w':
             player.speed.y = -10
             console.log("Player jumped [↑]")
+            break
+        case ' ':
+            player.attack()
+            console.log(">>> Player Attacked! >>>")
             break
 
         case 'ArrowRight':
