@@ -30,7 +30,7 @@ class Sprite {
         
         const spriteHasReachedTheBottom = this.position.y + this.height + 
         this.speed.y >= canvas.height
-        
+
         spriteHasReachedTheBottom ? 
             this.speed.y = 0 :
             this.speed.y += gravitySpeed
@@ -52,9 +52,12 @@ const foe = new Sprite({
 foe.drawSprite()
 
 const keys = {
+    // player's keys:
     d: { pressed: false },
     a: { pressed: false },
     w: { pressed: false },
+
+    // foe's keys:
     ArrowRight: { pressed: false },
     ArrowLeft: { pressed: false },
     ArrowUp: { pressed: false }
@@ -63,8 +66,6 @@ const keys = {
 let player_ = { lastKey: null }
 let foe_ = { lastKey: null }
 
-// let lstKeyPressed = null
-
 const animation = () => {
     console.log("Number increasing every 1s is showing the frame's speed.")
     window.requestAnimationFrame(animation)
@@ -72,13 +73,6 @@ const animation = () => {
     c.fillRect(0, 0, canvas.width, canvas.height)
     player.updateSprite()
     foe.updateSprite()
-
-    // Player's original movement:
-    // player.speed.x = 0
-    // if (keys.ArrowRight.pressed && player.lastKey === 'ArrowRight')
-    //     player.speed.x = 1
-    // else if (keys.ArrowLeft.pressed && lstKeyPressed === 'ArrowLeft')
-    //     player.speed.x = -1
 
     player.speed.x = 0
     foe.speed.x = 0
