@@ -1,0 +1,38 @@
+@charset "utf-8";
+
+* { box-sizing: border-box; }
+
+/* 
+    <div id="mainZone">
+        <div id="panelsBox">
+        <div id="playerBar"></div>
+        <div id="timer"></div>
+        <div id="foeBar">
+    </div> 
+*/
+
+#mainZone { 
+    position: relative;
+    display: inline-block; 
+}
+
+#mainZone > #panelsBox { 
+    position: absolute; 
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+}
+
+#playerBar, #foeBar {
+    background-color: yellow;
+    height: 60px;
+    width: 100%;
+}
+
+#timer {
+    background-color: #afaf30;
+    height: 100px;
+    width: 100px;
+    flex-shrink: 0;
+}
