@@ -8,14 +8,18 @@ c.fillRect(0, 0, canvas.width, canvas.height)
 const gravitySpeed = 0.65
 
 class Sprite {
-    constructor({ color, position, speed }) {
+    constructor({ color, position, speed, offset }) {
         this.color = color
         this.position = position
         this.speed = speed
         this.width = 50
         this.height = 150
         this.attackBox = {
-            position: this.position,
+            position: {
+                x: this.position.x,
+                y: this.position.y
+            },
+            offset: offset,
             width: 100,
             height: 50
         }
@@ -38,19 +42,30 @@ class Sprite {
         )
 
         // drawing attack box only if player attacks:
-        if (this.isAttacking) {
-            c.fillStyle = 'green'
-            c.fillRect(
-                this.attackBox.position.x, 
-                this.attackBox.position.y,
-                this.attackBox.width,
-                this.attackBox.height
-            )
-        }
+        // if (this.isAttacking) {
+        //     c.fillStyle = 'green'
+        //     c.fillRect(
+        //         this.attackBox.position.x, 
+        //         this.attackBox.position.y,
+        //         this.attackBox.width,
+        //         this.attackBox.height
+        //     )
+        // }
+        
+        c.fillStyle = 'green'
+        c.fillRect(
+            this.attackBox.position.x, 
+            this.attackBox.position.y,
+            this.attackBox.width,
+            this.attackBox.height
+        )
     }
 
     updateSprite() {
         this.drawSprite()
+        this.attackBox.position.x = this.position.x - this.attackBox.offset.x
+        this.attackBox.position.y = this.position.y
+
         this.position.x += this.speed.x
         this.position.y += this.speed.y
         
@@ -70,17 +85,19 @@ class Sprite {
     }
 }
 
-const player = new Sprite({ 
+const player = new Sprite({
     position: { x: 150, y: 0 },
     speed: { x: 0, y: 0 },
-    color: 'red'
+    color: 'red', 
+    offset: { x: 0, y: 0 } 
 })
 player.drawSprite()
 
 const foe = new Sprite({
     color: 'blue',
     position: { x: 350, y: 0 },
-    speed: { x: 0, y: 0 }
+    speed: { x: 0, y: 0 },
+    offset: { x: 50, y: 0 }
 })
 foe.drawSprite()
 
@@ -98,6 +115,19 @@ const keys = {
 
 let player_ = { lastKey: null }
 let foe_ = { lastKey: null }
+
+const retangularCollision = ({ rectan1, rectan2 }) => {
+    return (
+        rectan1.attackBox.position.x + rectan1.attackBox.width >= 
+            rectan2.position.x && 
+        rectan1.attackBox.position.x <= 
+            rectan2.position.x + rectan2.width && 
+        rectan1.attackBox.position.y + rectan1.attackBox.height >= 
+            rectan2.position.y && 
+        rectan1.attackBox.position.y <= 
+            rectan2.position.y + rectan2.height
+    )
+}
 
 const animation = () => {
     // Message bellow shows frame's speed:
@@ -123,15 +153,20 @@ const animation = () => {
     else if (keys.ArrowLeft.pressed && foe_.lastKey === 'ArrowLeft')
         foe.speed.x = -4
     
-    // 4. Detect for collisions:
-    if (player.attackBox.position.x + player.attackBox.width >= foe.position.x && 
-        player.attackBox.position.x <= foe.position.x + foe.width && 
-        player.attackBox.position.y + player.attackBox.height >= foe.position.y 
-        && player.attackBox.position.y <= foe.position.y + foe.height &&
+    // 4.1 Detect PLAYER'S collisions on both X and Y axes:
+    if (retangularCollision({ rectan1: player, rectan2: foe }) &&
         player.isAttacking
     ) {
+        console.log('<<< Foe hit by Player!!! <<<')
         player.isAttacking = false
-        console.log('<<< Foe hit <<<')
+    }
+
+    // 4.2 Detect FOE'S collisions on both X and Y axes:
+    if (retangularCollision({ rectan1: foe, rectan2: player }) &&
+        foe.isAttacking
+    ) {
+        console.log('<<< Player hit by Foe!!! <<<')
+        foe.isAttacking = false
     }
 }
 animation()
@@ -152,7 +187,7 @@ window.addEventListener('keydown', (keyboardClickEvent) => {
             player.speed.y = -10
             console.log("Player jumped [↑]")
             break
-        case ' ':
+        case ' ': // Space key:
             player.attack()
             console.log(">>> Player Attacked! >>>")
             break
@@ -170,6 +205,10 @@ window.addEventListener('keydown', (keyboardClickEvent) => {
         case 'ArrowUp':
             foe.speed.y = -10
             console.log("Foe jumped [↑]")
+            break
+        case 'ArrowDown':
+            foe.attack()
+            console.log(">>> Foe Attacked! >>>")
             break
     }
 })
