@@ -5,7 +5,7 @@ canvas.height = 576
 const c = canvas.getContext('2d')
 c.fillRect(0, 0, canvas.width, canvas.height)
 
-const gravitySpeed = 0.2
+const gravitySpeed = 0.65
 
 class Sprite {
     constructor({ color, position, speed }) {
@@ -36,23 +36,26 @@ class Sprite {
 }
 
 const player = new Sprite({ 
-    position: { x: 0, y: 0 },
-    speed: { x: 0, y: 5 },
+    position: { x: 100, y: 0 },
+    speed: { x: 0, y: 0 },
     color: 'red'
 })
 player.drawSprite()
 
 const foe = new Sprite({
     color: 'blue',
-    position: { x: 122, y: 0 },
+    position: { x: 322, y: 0 },
     speed: { x: 0, y: 0 }
 })
 foe.drawSprite()
 
 const keys = {
     ArrowRight: { pressed: false },
-    ArrowLeft: { pressed: false }
+    ArrowLeft: { pressed: false },
+    ArrowUp: { pressed: false }
 }
+
+let lstKeyPressed = null
 
 const animation = () => {
     console.log("Number increasing every 1s is showing the frame's speed.")
@@ -63,25 +66,28 @@ const animation = () => {
     foe.updateSprite()
 
     player.speed.x = 0
-
-    if (keys.ArrowRight.pressed)
+    if (keys.ArrowRight.pressed && lstKeyPressed === 'ArrowRight')
         player.speed.x = 1
-    else if (keys.ArrowLeft.pressed)
+    else if (keys.ArrowLeft.pressed && lstKeyPressed === 'ArrowLeft')
         player.speed.x = -1
 }
 animation()
-
-const showKPressed = key => console.log(key) 
 
 window.addEventListener('keydown', (keyboradClickEvent) => {
     switch(keyboradClickEvent.key) {
         case 'ArrowRight':
             keys.ArrowRight.pressed = true
-            showKPressed("Player's going right [→]")
+            lstKeyPressed = 'ArrowRight'
+            console.log("Player's going [→]")
             break
         case 'ArrowLeft':
             keys.ArrowLeft.pressed = true
-            showKPressed("Player's going left [←]")
+            lstKeyPressed = 'ArrowLeft'
+            console.log("Player's going [←]")
+            break
+        case 'ArrowUp':
+            player.speed.y = -10
+            console.log("Player jumped [↑]")
             break
     }
 })
@@ -94,6 +100,10 @@ window.addEventListener('keyup', (keyboradClickEvent) => {
             break
         case 'ArrowLeft':
             keys.ArrowLeft.pressed = false
+            console.log('Player Stopped')
+            break
+        case 'ArrowUp':
+            keys.ArrowUp.pressed = false
             console.log('Player Stopped')
             break
     }
