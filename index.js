@@ -50,10 +50,16 @@ const foe = new Sprite({
 foe.drawSprite()
 
 const keys = {
+    d: { pressed: false },
+    a: { pressed: false },
+    w: { pressed: false },
     ArrowRight: { pressed: false },
     ArrowLeft: { pressed: false },
     ArrowUp: { pressed: false }
 }
+
+let player_ = { lastKey: null }
+let foe_ = { lastKey: null }
 
 let lstKeyPressed = null
 
@@ -65,6 +71,14 @@ const animation = () => {
     player.updateSprite()
     foe.updateSprite()
 
+    // Player's movement:
+    player.speed.x = 0
+    if (keys.ArrowRight.pressed && player.lastKey === 'ArrowRight')
+        player.speed.x = 1
+    else if (keys.ArrowLeft.pressed && lstKeyPressed === 'ArrowLeft')
+        player.speed.x = -1
+
+    // Foe's movement:
     player.speed.x = 0
     if (keys.ArrowRight.pressed && lstKeyPressed === 'ArrowRight')
         player.speed.x = 1
