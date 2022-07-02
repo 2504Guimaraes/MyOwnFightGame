@@ -38,7 +38,7 @@ class Sprite {
 }
 
 const player = new Sprite({ 
-    position: { x: 100, y: 0 },
+    position: { x: 150, y: 0 },
     speed: { x: 0, y: 0 },
     color: 'red'
 })
@@ -46,7 +46,7 @@ player.drawSprite()
 
 const foe = new Sprite({
     color: 'blue',
-    position: { x: 322, y: 0 },
+    position: { x: 350, y: 0 },
     speed: { x: 0, y: 0 }
 })
 foe.drawSprite()
@@ -68,21 +68,21 @@ let foe_ = { lastKey: null }
 
 const animation = () => {
     console.log("Number increasing every 1s is showing the frame's speed.")
+    // Animation infinity loop:
     window.requestAnimationFrame(animation)
     c.fillStyle = 'black'
     c.fillRect(0, 0, canvas.width, canvas.height)
     player.updateSprite()
     foe.updateSprite()
 
+    // Player's and Foe's default speeds:
     player.speed.x = 0
     foe.speed.x = 0
-
     // Player's movement:
     if (keys.d.pressed && player_.lastKey === 'd')
         player.speed.x = 4
     else if (keys.a.pressed && player_.lastKey === 'a')
         player.speed.x = -4
-
     // Foe's movement:
     if (keys.ArrowRight.pressed && foe_.lastKey === 'ArrowRight')
         foe.speed.x = 4
@@ -91,8 +91,8 @@ const animation = () => {
 }
 animation()
 
-window.addEventListener('keydown', (keyboradClickEvent) => {
-    switch(keyboradClickEvent.key) {
+window.addEventListener('keydown', (keyboardClickEvent) => {
+    switch(keyboardClickEvent.key) {
         case 'd':
             keys.d.pressed = true
             player_.lastKey = 'd'
@@ -125,8 +125,8 @@ window.addEventListener('keydown', (keyboradClickEvent) => {
     }
 })
 
-window.addEventListener('keyup', (keyboradClickEvent) => {
-    switch(keyboradClickEvent.key) {
+window.addEventListener('keyup', (keyboardClickEvent) => {
+    switch(keyboardClickEvent.key) {
         case 'd':
             keys.d.pressed = false
             console.log('Player Stopped')
