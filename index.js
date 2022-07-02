@@ -63,7 +63,7 @@ const animation = () => {
     foe.updateSprite()
 
     player.speed.x = 0
-    
+
     if (keys.ArrowRight.pressed)
         player.speed.x = 1
     else if (keys.ArrowLeft.pressed)
