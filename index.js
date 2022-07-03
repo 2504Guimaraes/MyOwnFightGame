@@ -144,21 +144,25 @@ const animation = () => {
         foe.speed.x = 4
     else if (keys.ArrowLeft.pressed && foe_.lastKey === 'ArrowLeft')
         foe.speed.x = -4
+
+    const getElmnt = tpdId => document.querySelector(tpdId) 
     
     // 4.1 Detect PLAYER'S collisions on both X and Y axes:
-    if (retangularCollision({ rectan1: player, rectan2: foe }) &&
-        player.isAttacking
+    if (retangularCollision({ rectan1: player, rectan2: foe }) 
+        && player.isAttacking
     ) {
         console.log('<<< Foe hit by Player!!! <<<')
         player.isAttacking = false
+        getElmnt('#foeBar').style.width = '20%'
     }
 
     // 4.2 Detect FOE'S collisions on both X and Y axes:
-    if (retangularCollision({ rectan1: foe, rectan2: player }) &&
-        foe.isAttacking
+    if (retangularCollision({ rectan1: foe, rectan2: player }) 
+        && foe.isAttacking
     ) {
         console.log('<<< Player hit by Foe!!! <<<')
         foe.isAttacking = false
+        getElmnt('#playerBar').style.width = '20%'
     }
 }
 animation()

@@ -2,19 +2,15 @@
 
 * { box-sizing: border-box; }
 
-/* 
-    <div id="mainZone">
-        <div id="panelsBox">
-        <div id="playerBar"></div>
-        <div id="timer"></div>
-        <div id="foeBar">
-    </div> 
-*/
-
-#mainZone { 
-    position: relative;
-    display: inline-block; 
+:root {
+    --healthBackground: #c60d0d;
+    --healthColor: yellow; 
+    --healthBarHeight: 45px;
+    --healthBorder: 2px;
+    --borderC: #f1f1f1;
 }
+
+#mainZone { position: relative; display: inline-block; }
 
 #mainZone > #panelsBox { 
     position: absolute; 
@@ -25,9 +21,36 @@
 }
 
 #playerBar, #foeBar {
-    background-color: yellow;
-    height: 60px;
+    background-color: var(--healthColor);
+    height: calc(var(--healthBarHeight) - var(--healthBorder) * 2);
+}
+
+#playerZone { 
+    background-color: var(--healthBackground);
+    position: relative; 
+    height: var(--healthBarHeight);
     width: 100%;
+    border: var(--healthBorder) solid var(--borderC);
+}
+
+#playerBar {
+    right: -1px;
+    position: absolute;
+    width: 90%;
+}
+
+#foeZone { 
+    background-color: var(--healthBackground);
+    position: relative; 
+    height: var(--healthBarHeight);
+    width: 100%;
+    border: var(--healthBorder) solid var(--borderC);
+}
+
+#foeBar {
+    left: -1px;
+    position: absolute;
+    width: 65%;
 }
 
 #timer {
