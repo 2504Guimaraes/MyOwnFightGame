@@ -6,7 +6,7 @@
     --healthBackground: #c60d0d;
     --healthColor: yellow; 
     --healthBarHeight: 45px;
-    --healthBorder: 2px;
+    --healthBorder: 3px;
     --borderC: #f1f1f1;
 }
 
@@ -26,6 +26,7 @@
 }
 
 #playerZone { 
+    right: -2px;
     background-color: var(--healthBackground);
     position: relative; 
     height: var(--healthBarHeight);
@@ -36,10 +37,10 @@
 #playerBar {
     right: -1px;
     position: absolute;
-    width: 90%;
 }
 
 #foeZone { 
+    right: 2px;
     background-color: var(--healthBackground);
     position: relative; 
     height: var(--healthBarHeight);
@@ -50,12 +51,18 @@
 #foeBar {
     left: -1px;
     position: absolute;
-    width: 65%;
 }
 
 #timer {
-    background-color: #afaf30;
-    height: 100px;
-    width: 100px;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #3043af;
+    height: 75px;
+    width: 150px;
+    color: #fff;
+    font-size: 1.28rem;
+    font-family: monospace;
+    border: 4px solid var(--borderC);
 }

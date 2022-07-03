@@ -1,4 +1,6 @@
-const canvas = document.getElementById('myCanvas')
+const getElmnt = tpdId => document.querySelector(tpdId) 
+
+const canvas = getElmnt('#myCanvas')
 canvas.width = 1094
 canvas.height = 576
 
@@ -24,6 +26,9 @@ class Sprite {
             height: 50
         }
         this.isAttacking = false
+        this.health = 100
+        getElmnt('#playerBar').style.width = `${this.health}%`
+        getElmnt('#foeBar').style.width = `${this.health}%`
     }
 
     drawSprite() {
@@ -121,6 +126,17 @@ const retangularCollision = ({ rectan1, rectan2 }) => {
     )
 }
 
+let timer = 10
+const decreaseTimer = () => {
+    const timerDiv = getElmnt('#timer')
+    if (timer > 0) {
+        timer -= 1
+        timerDiv.innerText = timer
+        setTimeout(decreaseTimer, 1000)
+    }
+}
+decreaseTimer()
+
 const animation = () => {
     // Message bellow shows frame's speed:
     // console.log("Number increasing every 1s is showing the frame's speed.")
@@ -144,8 +160,6 @@ const animation = () => {
         foe.speed.x = 4
     else if (keys.ArrowLeft.pressed && foe_.lastKey === 'ArrowLeft')
         foe.speed.x = -4
-
-    const getElmnt = tpdId => document.querySelector(tpdId) 
     
     // 4.1 Detect PLAYER'S collisions on both X and Y axes:
     if (retangularCollision({ rectan1: player, rectan2: foe }) 
@@ -153,7 +167,9 @@ const animation = () => {
     ) {
         console.log('<<< Foe hit by Player!!! <<<')
         player.isAttacking = false
-        getElmnt('#foeBar').style.width = '20%'
+        const newLifeValue = parseInt(getElmnt('#foeBar').style.width) - 20
+        foe.health = newLifeValue
+        getElmnt('#foeBar').style.width = `${newLifeValue}%`
     }
 
     // 4.2 Detect FOE'S collisions on both X and Y axes:
@@ -162,7 +178,9 @@ const animation = () => {
     ) {
         console.log('<<< Player hit by Foe!!! <<<')
         foe.isAttacking = false
-        getElmnt('#playerBar').style.width = '20%'
+        const newLifeValue = parseInt(getElmnt('#playerBar').style.width) - 20
+        player.health = newLifeValue
+        getElmnt('#playerBar').style.width = `${newLifeValue}%`
     }
 }
 animation()
