@@ -23,6 +23,7 @@
 #playerBar, #foeBar {
     background-color: var(--healthColor);
     height: calc(var(--healthBarHeight) - var(--healthBorder) * 2);
+    transition: width .75s;
 }
 
 #playerZone { 
@@ -37,6 +38,11 @@
 #playerBar {
     right: -1px;
     position: absolute;
+    /* 
+    WARNING: These values below make the 
+    health bar's appearence cleaner: 
+    */
+    height: 41px; top: -1px;
 }
 
 #foeZone { 
@@ -51,6 +57,12 @@
 #foeBar {
     left: -1px;
     position: absolute;
+    width: 20%; 
+    /* 
+    WARNING: These values below make the 
+    health bar's appearence cleaner: 
+    */
+    height: 41px; top: -1px;
 }
 
 #timer {

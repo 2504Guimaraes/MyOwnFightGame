@@ -27,8 +27,17 @@ class Sprite {
         }
         this.isAttacking = false
         this.health = 100
-        getElmnt('#playerBar').style.width = `${this.health}%`
-        getElmnt('#foeBar').style.width = `${this.health}%`
+
+        const N = 0.3
+        /* 
+            NOTE: "N" above is a tinny width value made 
+            to make the characters' health bar look
+            cleaner. Besides, it only affects the bars' 
+            CSS appearance and not the characters' health 
+            property in itself.
+        */
+        getElmnt('#playerBar').style.width = `${this.health + N}%`
+        getElmnt('#foeBar').style.width = `${this.health + N}%`
     }
 
     drawSprite() {
