@@ -126,25 +126,27 @@ const retangularCollision = ({ rectan1, rectan2 }) => {
     )
 }
 
-let timer = 10
+let timer = 11
 const decreaseTimer = () => {
     if (timer > 0) {
         timer -= 1
         getElmnt('#timer').innerText = timer
         setTimeout(decreaseTimer, 1000)
     }
-    else if (player.health == foe.health) {
-        getElmnt('#tieWarning').style.display = 'block'
-    }
-    else if (player.health > foe.health) {
-        const msg = 'Player Victory'
-        getElmnt('#tieWarning').innerText = msg
-        getElmnt('#tieWarning').style.display = 'block'
-    }
-    else if (player.health < foe.health) {
-        const msg = 'Foe Victory'
-        getElmnt('#tieWarning').innerText = msg
-        getElmnt('#tieWarning').style.display = 'block'
+    if (timer == 0) {
+        if (player.health == foe.health) {
+            getElmnt('#tieWarning').style.display = 'block'
+        }
+        else if (player.health > foe.health) {
+            const msg = 'Player Victory'
+            getElmnt('#tieWarning').innerText = msg
+            getElmnt('#tieWarning').style.display = 'block'
+        }
+        else if (player.health < foe.health) {
+            const msg = 'Foe Victory'
+            getElmnt('#tieWarning').innerText = msg
+            getElmnt('#tieWarning').style.display = 'block'
+        }
     }
 }
 decreaseTimer()

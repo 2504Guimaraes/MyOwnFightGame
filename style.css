@@ -68,6 +68,18 @@
     font-weight: bold;
 }
 
+.charactersNm {
+    position: absolute;
+    color: #fff;
+    font-family: monospace;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+#playersNm { top: 80px; left: 12px; }
+
+#foesNm { top: 80px; left: 829px; }
+
 #tieWarning {
     display: none;
     position: absolute;
