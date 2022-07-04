@@ -57,7 +57,6 @@
 #foeBar {
     left: -1px;
     position: absolute;
-    width: 20%; 
     /* 
     WARNING: These values below make the 
     health bar's appearence cleaner: 
@@ -88,7 +87,7 @@
     font-weight: bold;
 }
 
-#playersNm { top: 80px; left: 12px; }
+#playersNm { top: 80px; left: 15px; }
 
 #foesNm { top: 80px; left: 829px; }
 

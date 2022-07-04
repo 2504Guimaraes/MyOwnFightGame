@@ -36,8 +36,10 @@ class Sprite {
             CSS appearance and not the characters' health 
             property in itself.
         */
-        getElmnt('#playerBar').style.width = `${this.health + N}%`
-        getElmnt('#foeBar').style.width = `${this.health + N}%`
+        getElmnt('#playerBar')
+            .style.width = `${this.health + N}%`
+        getElmnt('#foeBar')
+            .style.width = `${this.health + N}%`
     }
 
     drawSprite() {
@@ -135,28 +137,39 @@ const retangularCollision = ({ rectan1, rectan2 }) => {
     )
 }
 
-let timer = 11
+const determineWinner = ({ player, foe, timerCall }) => {
+    const stopTimerCall = (timerCall) => {
+        timerCall = null
+        timer = 0
+    }
+    stopTimerCall()
+    
+    if (player.health == foe.health) {
+        getElmnt('#tieWarning').style.display = 'block'
+    }
+    else if (player.health > foe.health) {
+        const msg = 'Player Victory'
+        getElmnt('#tieWarning').innerText = msg
+        getElmnt('#tieWarning').style.display = 'block'
+    }
+    else if (player.health < foe.health) {
+        const msg = 'Foe Victory'
+        getElmnt('#tieWarning').innerText = msg
+        getElmnt('#tieWarning').style.display = 'block'
+    }
+}
+
+let timer = 61
+let timerCall = null
+
 const decreaseTimer = () => {
     if (timer > 0) {
         timer -= 1
         getElmnt('#timer').innerText = timer
-        setTimeout(decreaseTimer, 1000)
+        timerCall = setTimeout(decreaseTimer, 1000)
     }
-    if (timer == 0) {
-        if (player.health == foe.health) {
-            getElmnt('#tieWarning').style.display = 'block'
-        }
-        else if (player.health > foe.health) {
-            const msg = 'Player Victory'
-            getElmnt('#tieWarning').innerText = msg
-            getElmnt('#tieWarning').style.display = 'block'
-        }
-        else if (player.health < foe.health) {
-            const msg = 'Foe Victory'
-            getElmnt('#tieWarning').innerText = msg
-            getElmnt('#tieWarning').style.display = 'block'
-        }
-    }
+    if (timer == 0)
+        determineWinner({ player, foe, timerCall })
 }
 decreaseTimer()
 
@@ -185,7 +198,11 @@ const animation = () => {
         foe.speed.x = -4
     
     // 4.1 Detect PLAYER'S collisions on both X and Y axes:
-    if (retangularCollision({ rectan1: player, rectan2: foe }) 
+    if (
+        retangularCollision({ 
+            rectan1: player, 
+            rectan2: foe 
+        }) 
         && player.isAttacking
     ) {
         console.log('<<< Foe hit by Player!!! <<<')
@@ -197,7 +214,11 @@ const animation = () => {
     }
 
     // 4.2 Detect FOE'S collisions on both X and Y axes:
-    if (retangularCollision({ rectan1: foe, rectan2: player }) 
+    if (
+        retangularCollision({ 
+            rectan1: foe, 
+            rectan2: player 
+        }) 
         && foe.isAttacking
     ) {
         console.log('<<< Player hit by Foe!!! <<<')
@@ -207,6 +228,10 @@ const animation = () => {
         player.health = newLifeValue
         getElmnt('#playerBar').style.width = `${newLifeValue}%`
     }
+
+    // 5. Defines who won based on their health even before timer runs out:
+    if (player.health == 0 || foe.health == 0)
+        determineWinner({ player, foe, timerCall })
 }
 animation()
 
