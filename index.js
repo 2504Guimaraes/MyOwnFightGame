@@ -30,7 +30,7 @@ class Sprite {
 
         const N = 0.3
         /* 
-            NOTE: "N" above is a tinny width value made 
+            NOTE: "N" above [↑] is a tinny width value made 
             to make the characters' health bar look
             cleaner. Besides, it only affects the bars' 
             CSS appearance and not the characters' health 
@@ -190,6 +190,7 @@ const animation = () => {
     ) {
         console.log('<<< Foe hit by Player!!! <<<')
         player.isAttacking = false
+        // WARNING: The parseInt() function makes our CSS width value, which's 100.3% turn to 100%
         const newLifeValue = parseInt(getElmnt('#foeBar').style.width) - 20
         foe.health = newLifeValue
         getElmnt('#foeBar').style.width = `${newLifeValue}%`
@@ -201,6 +202,7 @@ const animation = () => {
     ) {
         console.log('<<< Player hit by Foe!!! <<<')
         foe.isAttacking = false
+        // WARNING: The parseInt() function makes our CSS width value, which's 100.3% turn to 100%
         const newLifeValue = parseInt(getElmnt('#playerBar').style.width) - 20
         player.health = newLifeValue
         getElmnt('#playerBar').style.width = `${newLifeValue}%`
