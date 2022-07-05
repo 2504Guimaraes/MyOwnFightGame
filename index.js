@@ -1,7 +1,7 @@
 const getElmnt = tpdId => document.querySelector(tpdId) 
 
 const canvas = getElmnt('#myCanvas')
-canvas.width = 1094
+canvas.width = 1024
 canvas.height = 576
 
 const c = canvas.getContext('2d')
