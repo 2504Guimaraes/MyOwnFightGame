@@ -1,17 +1,20 @@
 class Sprite {
-    constructor({ position, imgSrc }) {
+    constructor({ position, imgSrc, imgScale = 1 }) {
         this.position = position
         this.width = 50
         this.height = 150
         this.img = new Image()
         this.img.src = imgSrc
+        this.scale = imgScale
     }
 
     drawSprite() {
         c.drawImage(
             this.img, 
             this.position.x, 
-            this.position.y
+            this.position.y,
+            this.img.width * this.scale,
+            this.img.height * this.scale
         )
     }
 

@@ -12,6 +12,12 @@ const background = new Sprite({
     imgSrc: './img/background.png'
 })
 
+const shop = new Sprite({
+    position: { x: 600, y: 128 },
+    imgSrc: './img/shop.png',
+    imgScale: 2.75
+})
+
 const player = new Fighter({
     position: { x: 150, y: 0 },
     speed: { x: 0, y: 0 },
@@ -51,6 +57,7 @@ const animation = () => {
     c.fillRect(0, 0, canvas.width, canvas.height)
 
     background.updateSprite()
+    shop.updateSprite()
     player.updateSprite()
     foe.updateSprite()
 
