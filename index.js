@@ -66,18 +66,18 @@ const determineWinner = ({ player, foe, timerCall }) => {
         getElmnt('#tieWarning').style.display = 'block'
     }
     else if (player.health > foe.health) {
-        const msg = 'Player Victory'
+        const msg = 'Player Victory!!!'
         getElmnt('#tieWarning').innerText = msg
         getElmnt('#tieWarning').style.display = 'block'
     }
     else if (player.health < foe.health) {
-        const msg = 'Foe Victory'
+        const msg = 'Foe Victory!!!'
         getElmnt('#tieWarning').innerText = msg
         getElmnt('#tieWarning').style.display = 'block'
     }
 }
 
-let timer = 61
+let timer = 11
 let timerCall = null
 
 const decreaseTimer = () => {
