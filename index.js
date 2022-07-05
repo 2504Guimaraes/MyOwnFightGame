@@ -15,7 +15,8 @@ const background = new Sprite({
 const shop = new Sprite({
     position: { x: 600, y: 128 },
     imgSrc: './img/shop.png',
-    imgScale: 2.75
+    imgScale: 2.75,
+    frameMax: 6 // how many times our img gonna be cropped
 })
 
 const player = new Fighter({

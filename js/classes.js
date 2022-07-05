@@ -1,25 +1,46 @@
 class Sprite {
-    constructor({ position, imgSrc, imgScale = 1 }) {
+    constructor({ position, imgSrc, imgScale = 1, frameMax = 1 }) {
         this.position = position
         this.width = 50
         this.height = 150
         this.img = new Image()
         this.img.src = imgSrc
         this.scale = imgScale
+        this.frameMax = frameMax
+        this.framesStart = 0
+        this.framesElapsed = 0
+        this.framesHold = 5
     }
 
     drawSprite() {
+        const whereXgonnaBe = 
+            this.framesStart * 
+            (this.img.width / this.frameMax)
+
         c.drawImage(
             this.img, 
+            
+            whereXgonnaBe,                     // X axis from where cropped img starts
+            0,                                 // Y axis from where cropped img starts
+            (this.img.width / this.frameMax),  // Cropped img width 
+            this.img.height,                   // Cropped img height (All for our loop/animation effect).
+
             this.position.x, 
             this.position.y,
-            this.img.width * this.scale,
+            (this.img.width / this.frameMax) * this.scale,
             this.img.height * this.scale
         )
     }
 
     updateSprite() {
         this.drawSprite()
+        this.framesElapsed++
+
+        if (this.framesElapsed % this.framesHold === 0) {
+            this.framesStart < this.frameMax - 1 ?
+                this.framesStart++ :
+                this.framesStart = 0
+        }
     }
 }
 

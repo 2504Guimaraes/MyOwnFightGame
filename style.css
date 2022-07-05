@@ -5,8 +5,8 @@
 * { box-sizing: border-box; }
 
 :root {
-    --healthBackground: #c60d0d;
-    --healthColor: yellow; 
+    --healthBackground: #ad0909;
+    --healthColor: #ffdd00; 
     --healthBarHeight: 45px;
     --healthBorder: 3px;
     --borderC: #f1f1f1;
@@ -102,7 +102,7 @@
     transform: translate(-50%,-50%);
     margin: 0 auto;
     padding: 5px 15px;
-    font-size: 28px;
+    font-size: 25px;
     font-family: var(--videoGameFont), monospace;
     font-weight: bold;
     color: #fff;
