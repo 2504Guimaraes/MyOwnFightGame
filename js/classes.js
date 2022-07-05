@@ -83,14 +83,20 @@ class Fighter {
 
     updateSprite() {
         this.drawSprite()
-        this.attackBox.position.x = this.position.x - this.attackBox.offset.x
-        this.attackBox.position.y = this.position.y
+        
+        this.attackBox.position.x = 
+            this.position.x - this.attackBox.offset.x
+        
+        this.attackBox.position.y = 
+            this.position.y
 
         this.position.x += this.speed.x
         this.position.y += this.speed.y
         
-        const spriteHasReachedTheBottom = this.position.y + this.height + 
-            this.speed.y >= canvas.height
+        const groundHeight = 96
+        const spriteHasReachedTheBottom = 
+            this.position.y + this.height + 
+            this.speed.y >= (canvas.height - groundHeight)
 
         spriteHasReachedTheBottom ? 
             this.speed.y = 0 :
