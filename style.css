@@ -72,7 +72,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #3043af;
+    background-color: #434343;
     height: 75px;
     width: 150px;
     color: #fff;
@@ -85,14 +85,14 @@
 .charactersNm {
     position: absolute;
     color: #fff;
-    font-family: monospace;
-    font-size: 22px;
+    font-family: var(--videoGameFont), monospace;
+    font-size: 14px;
     font-weight: bold;
 }
 
 #playersNm { top: 80px; left: 15px; }
 
-#foesNm { top: 80px; left: 754px; }
+#foesNm { top: 80px; left: 721px; }
 
 #tieWarning {
     display: none;
@@ -102,8 +102,9 @@
     transform: translate(-50%,-50%);
     margin: 0 auto;
     padding: 5px 15px;
-    font-family: var(--videoGameFont), monospace;
-    color: #fff;
     font-size: 22px;
+    font-family: var(--videoGameFont), monospace;
+    font-weight: bold;
+    color: #fff;
     width: fit-content;
 }
