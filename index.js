@@ -46,15 +46,58 @@ const player = new Fighter({
         attack1: {
             imgSrc: './img/player1/Attack1.png',
             frameMax: 6
+        },
+        takeHit: {
+            imgSrc: './img/player1/Take hit.png',
+            frameMax: 4
         }
+    },
+    attackBox: {
+        offset: { x: -70, y: 50 },
+        width: 180,
+        height: 50
     }
 })
 player.drawSprite()
 
 const foe = new Fighter({
-    position: { x: 350, y: 0 },
+    position: { x: 520, y: 0 },
     speed: { x: 0, y: 0 },
-    offset: { x: 50, y: 0 }
+    imgSrc: './img/player2/idle.png',
+    frameMax: 4,
+    imgScale: 2.5,
+    offset: { x: 215, y: 157 },
+    sprites: {
+        idle: {
+            imgSrc: './img/player2/Idle.png',
+            frameMax: 4
+        },
+        run: {
+            imgSrc: './img/player2/Run.png',
+            frameMax: 8
+        },
+        jump: {
+            imgSrc: './img/player2/Jump.png',
+            frameMax: 2
+        },
+        fall: {
+            imgSrc: './img/player2/Fall.png',
+            frameMax: 2
+        },
+        attack1: {
+            imgSrc: './img/player2/Attack1.png',
+            frameMax: 4
+        },
+        takeHit: {
+            imgSrc: './img/player2/Take hit.png',
+            frameMax: 3
+        }
+    },
+    attackBox: {
+        offset: { x: 175, y: 50 },
+        width: 180,
+        height: 50
+    }
 })
 foe.drawSprite()
 
@@ -83,7 +126,7 @@ const animation = () => {
     background.updateSprite()
     shop.updateSprite()
     player.updateSprite()
-    // foe.updateSprite()
+    foe.updateSprite()
 
     // 1. Player's and Foe's default speeds:
     player.speed.x = 0
@@ -111,11 +154,27 @@ const animation = () => {
 
 
     // 3. Foe's movement:
-    if (keys.ArrowRight.pressed && foe.lastKey === 'ArrowRight')
+    if (keys.ArrowRight.pressed && foe.lastKey === 'ArrowRight') {
         foe.speed.x = 4
-    else if (keys.ArrowLeft.pressed && foe.lastKey === 'ArrowLeft')
+        foe.switchSprite('run')
+    }
+    else if (keys.ArrowLeft.pressed && foe.lastKey === 'ArrowLeft') {
         foe.speed.x = -4
-    
+        foe.switchSprite('run')
+    }
+    else {
+        foe.switchSprite('idle')
+    }
+
+    // When foe's jumping:
+    if (foe.speed.y < 0) {
+        foe.switchSprite('jump')
+    }
+    else if (foe.speed.y > 0) {
+        foe.switchSprite('fall')
+    }
+
+
     // 4.1 Detect PLAYER'S collisions on both X and Y axes:
     if (
         retangularCollision({ 
@@ -123,14 +182,17 @@ const animation = () => {
             rectan2: foe 
         }) 
         && player.isAttacking
+        && player.framesStart === 4
     ) {
+        foe.takeHit(2)
         console.log('<<< Foe hit by Player!!! <<<')
         player.isAttacking = false
-        // WARNING: The parseInt() function makes our CSS width value, which's 100.3% turn to 100%
-        const newLifeValue = parseInt(getElmnt('#foeBar').style.width) - 20
-        foe.health = newLifeValue
-        getElmnt('#foeBar').style.width = `${newLifeValue}%`
     }
+
+    // if player's missing:
+    if (player.isAttacking && player.framesStart === 4)
+        player.isAttacking = false   
+
 
     // 4.2 Detect FOE'S collisions on both X and Y axes:
     if (
@@ -139,13 +201,11 @@ const animation = () => {
             rectan2: player 
         }) 
         && foe.isAttacking
+        && foe.framesStart === 2
     ) {
+        player.takeHit(1)
         console.log('<<< Player hit by Foe!!! <<<')
         foe.isAttacking = false
-        // WARNING: The parseInt() function makes our CSS width value, which's 100.3% turn to 100%
-        const newLifeValue = parseInt(getElmnt('#playerBar').style.width) - 20
-        player.health = newLifeValue
-        getElmnt('#playerBar').style.width = `${newLifeValue}%`
     }
 
     // 5. Defines who won based on their health even before timer runs out:

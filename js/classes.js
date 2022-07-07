@@ -62,8 +62,13 @@ class Fighter extends Sprite {
         imgSrc, 
         imgScale = 1, 
         frameMax = 1,
-        offset = { x: 0 , y: 0  },
-        sprites
+        offset = { x: 0 , y: 0 },
+        sprites,
+        attackBox = { 
+            offset: {}, 
+            width: undefined,
+            height: undefined
+         }
     }) {
         super({ 
             position,
@@ -80,9 +85,9 @@ class Fighter extends Sprite {
                 x: this.position.x,
                 y: this.position.y
             },
-            offset: offset,
-            width: 100,
-            height: 50
+            offset: attackBox.offset,
+            width: attackBox.width,
+            height: attackBox.height
         }
         this.isAttacking = false
         this.health = 100
@@ -117,11 +122,17 @@ class Fighter extends Sprite {
         this.drawSprite()
         this.animateFrame()
 
-        this.attackBox.position.x = 
-            this.position.x - this.attackBox.offset.x
-        
-        this.attackBox.position.y = 
-            this.position.y
+        // Attack boxes' offset
+        this.attackBox.position.x = this.position.x - this.attackBox.offset.x
+        this.attackBox.position.y = this.position.y + this.attackBox.offset.y
+
+        // Draw the attack box, showing the charaters' attack zone:
+        // c.fillRect(
+        //     this.attackBox.position.x,
+        //     this.attackBox.position.y,
+        //     this.attackBox.width,
+        //     this.attackBox.height
+        // )
 
         this.position.x += this.speed.x
         this.position.y += this.speed.y
@@ -143,16 +154,33 @@ class Fighter extends Sprite {
     attack() {
         this.switchSprite('attack1')
         this.isAttacking = true
-        setTimeout(() => { 
-            this.isAttacking = false 
-        }, 100)
+    }
+
+    takeHit(number) {
+        let idPerson = undefined
+        if (number == 1) idPerson = '#playerBar'
+        if (number == 2) idPerson = '#foeBar'
+        this.switchSprite('takeHit')
+        
+        // WARNING: The parseInt() function makes our CSS width value, which's 100.3% turn to 100%
+        const newLifeValue = parseInt(getElmnt(idPerson).style.width) - 20
+        this.health = newLifeValue
+        getElmnt(idPerson).style.width = `${newLifeValue}%`
     }
 
     switchSprite(sprite) {
+        // overriding all other animation with the attack animation
         if (
             this.img === this.sprites.attack1.img &&
             this.framesStart < this.sprites.attack1.frameMax - 1
         ) 
+            return
+        
+            // overriding all other animation with the hit animmation
+        if (
+            this.img === this.sprites.takeHit.img &&
+            this.framesStart < this.sprites.takeHit.frameMax - 1
+        )
             return
         
         switch(sprite) {
@@ -188,6 +216,13 @@ class Fighter extends Sprite {
                 if (this.img != this.sprites.attack1.img) {
                     this.img = this.sprites.attack1.img
                     this.frameMax = this.sprites.attack1.frameMax
+                    this.framesStart = 0
+                }
+                break
+            case 'takeHit':
+                if (this.img != this.sprites.takeHit.img) {
+                    this.img = this.sprites.takeHit.img
+                    this.frameMax = this.sprites.takeHit.frameMax
                     this.framesStart = 0
                 }
                 break
