@@ -48,7 +48,7 @@ const player = new Fighter({
             frameMax: 6
         },
         takeHit: {
-            imgSrc: './img/player1/Take hit.png',
+            imgSrc: './img/player1/Takehit.png',
             frameMax: 4
         }
     },
@@ -89,7 +89,7 @@ const foe = new Fighter({
             frameMax: 4
         },
         takeHit: {
-            imgSrc: './img/player2/Take hit.png',
+            imgSrc: './img/player2/Takehit.png',
             frameMax: 3
         }
     },
