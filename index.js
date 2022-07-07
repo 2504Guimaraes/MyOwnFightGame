@@ -22,13 +22,36 @@ const shop = new Sprite({
 const player = new Fighter({
     position: { x: 150, y: 0 },
     speed: { x: 0, y: 0 },
-    color: 'red', 
-    offset: { x: 0, y: 0 } 
+    imgSrc: './img/player1/idle.png',
+    frameMax: 8,
+    imgScale: 2.5,
+    offset: { x: 215, y: 157 },
+    sprites: {
+        idle: {
+            imgSrc: './img/player1/Idle.png',
+            frameMax: 8
+        },
+        run: {
+            imgSrc: './img/player1/Run.png',
+            frameMax: 8
+        },
+        jump: {
+            imgSrc: './img/player1/Jump.png',
+            frameMax: 2
+        },
+        fall: {
+            imgSrc: './img/player1/Fall.png',
+            frameMax: 2
+        },
+        attack1: {
+            imgSrc: './img/player1/Attack1.png',
+            frameMax: 6
+        }
+    }
 })
 player.drawSprite()
 
 const foe = new Fighter({
-    color: 'blue',
     position: { x: 350, y: 0 },
     speed: { x: 0, y: 0 },
     offset: { x: 50, y: 0 }
@@ -60,16 +83,33 @@ const animation = () => {
     background.updateSprite()
     shop.updateSprite()
     player.updateSprite()
-    foe.updateSprite()
+    // foe.updateSprite()
 
     // 1. Player's and Foe's default speeds:
     player.speed.x = 0
     foe.speed.x = 0
     // 2. Player's movement:
-    if (keys.d.pressed && player.lastKey === 'd')
+    if (keys.d.pressed && player.lastKey === 'd') {
         player.speed.x = 4
-    else if (keys.a.pressed && player.lastKey === 'a')
+        player.switchSprite('run')
+    }
+    else if (keys.a.pressed && player.lastKey === 'a') {
         player.speed.x = -4
+        player.switchSprite('run')
+    }
+    else {
+        player.switchSprite('idle')
+    }
+
+    // When player's jumping:
+    if (player.speed.y < 0) {
+        player.switchSprite('jump')
+    }
+    else if (player.speed.y > 0) {
+        player.switchSprite('fall')
+    }
+
+
     // 3. Foe's movement:
     if (keys.ArrowRight.pressed && foe.lastKey === 'ArrowRight')
         foe.speed.x = 4
