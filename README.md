@@ -12,10 +12,10 @@ To play it as the *player 1* or *player 2* these below are the keys you gonna us
         
     Player 1:           Player 2:
         
-    [ W ] Up            [ ↑ ] Up
-    [ A ] Left          [ ← ] Left
-    [ D ] Right         [ → ] Right
-    [ SPACE ] Attack    [ ↓ ] Attack
+    [W]  Up            [↑]  Up
+    [A]  Left          [←]  Left
+    [D]  Right         [→]  Right
+    [SPACE]  Attack    [↓]  Attack
 
 
 
